@@ -43,7 +43,7 @@ function App() {
 
         <form className='w-full flex lg:max-w-xl' onSubmit={(e) => e.preventDefault()}>
           <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search for any IP address or domain" className="outline-none border-darkerGray focus:border-2 px-6 py-4 rounded-s-2xl text-lg grow" />
-          <button type="submit" disabled={input.trim() === ''} onClick={() => setTrigger(prev => !prev)} className="rounded-e-2xl bg-darkerGray px-6">
+          <button type="submit" disabled={input.trim() === ''} onClick={() => setTrigger(prev => !prev)} className="rounded-e-2xl bg-darkerGray px-6 hover:bg-darkGray transition-all">
             <img src={arrowIcon} alt="Search" />
           </button>
         </form>
