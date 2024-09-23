@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import arrowIcon from "./assets/icon-arrow.svg"
 import MapSection from "./components/MapSection"
 
@@ -8,11 +8,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(null)
 
-  const mapRef = useRef()
-
-  useEffect(() => {
-    if (mapRef.current) mapRef.current.scrollIntoView({ behavior: 'smooth' })
-  }, [])
+  const [input, setInput] = useState('')
+  const [trigger, setTrigger] = useState(false)
 
   useEffect(() => {
     setData(null)
@@ -22,7 +19,7 @@ function App() {
     const fetchIp = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}?apiKey=${import.meta.env.VITE_API_KEY}`
+          `${import.meta.env.VITE_API_URL}?apiKey=${import.meta.env.VITE_API_KEY}${input.trim() !== '' ? "&ipAddress=" + input.trim() : ''}`
         );
 
         const data = await response.json()
@@ -37,16 +34,16 @@ function App() {
     }
 
     fetchIp()
-  }, [])
+  }, [trigger])
 
   return (
     <>
       <header className="font-rubik h-[35vh] bg-[url('/backgrounds/bg-mobile.png')] bg-cover bg-center flex flex-col gap-4 items-center p-7">
         <h1 className="text-white font-semibold text-2xl pb-2">IP Address Tracker</h1>
 
-        <form className='w-full flex'>
-          <input type="text" className="outline-none border-darkerGray focus:border-2 px-6 py-4 rounded-s-2xl text-lg grow" />
-          <button type="submit" className="rounded-e-2xl bg-darkerGray px-6">
+        <form className='w-full flex' onSubmit={(e) => e.preventDefault()}>
+          <input type="text" value={input} onChange={(e) => setInput(e.target.value)} className="outline-none border-darkerGray focus:border-2 px-6 py-4 rounded-s-2xl text-lg grow" />
+          <button type="submit" disabled={input.trim() === ''} onClick={() => setTrigger(prev => !prev)} className="rounded-e-2xl bg-darkerGray px-6">
             <img src={arrowIcon} alt="Search" />
           </button>
         </form>
@@ -71,7 +68,7 @@ function App() {
         </div>
       </header>
 
-      <main ref={mapRef} className="h-screen flex">
+      <main className="h-[65vh] flex">
         {data && <MapSection data={data} />}
       </main>
     </>
