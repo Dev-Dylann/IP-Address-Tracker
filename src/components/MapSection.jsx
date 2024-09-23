@@ -19,7 +19,7 @@ function MapSection({ data }) {
             iconUrl: locationIcon,
         })
 
-        const marker = L.marker([data.location.lat, data.location.lng], {
+        L.marker([data.location.lat, data.location.lng], {
             icon: icon
         }).addTo(map);
 
